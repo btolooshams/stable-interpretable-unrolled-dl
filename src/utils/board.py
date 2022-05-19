@@ -68,7 +68,7 @@ def log_dictionary_conv(writer, net, epoch):
     for conv in range(net.num_conv):
         ax1 = plt.subplot(gs1[conv])
         wi = W[conv]
-        wi = np.transpose(wi, (1,2,0))
+        wi = np.transpose(wi, (1, 2, 0))
         if wi.shape[-1] == 1:
             plt.imshow(wi, cmap="gray")
         else:
@@ -117,7 +117,7 @@ def log_img(writer, x, xhat, epoch, reshape=None):
     ax.set_aspect("equal")
     i = np.random.randint(x.shape[0])
     img = x[i].clone().detach().cpu().numpy()
-    img = np.transpose(img, (1,2,0))
+    img = np.transpose(img, (1, 2, 0))
     if reshape:
         img = np.reshape(img, reshape)
     plt.imshow(img, cmap="gray")
@@ -128,7 +128,7 @@ def log_img(writer, x, xhat, epoch, reshape=None):
     ax.set_yticklabels([])
     ax.set_aspect("equal")
     img_hat = xhat[i].clone().detach().cpu().numpy()
-    img_hat = np.transpose(img_hat, (1,2,0))
+    img_hat = np.transpose(img_hat, (1, 2, 0))
     if reshape:
         img_hat = np.reshape(img_hat, reshape)
     plt.imshow(img_hat, cmap="gray")

@@ -135,7 +135,9 @@ def visualize_G_matrix(dataset):
     ax.set_yticklabels([])
 
     plt.savefig(
-        "../results/G_matrix.png", bbox_inches="tight", pad_inches=0.02,
+        "../results/G_matrix.png",
+        bbox_inches="tight",
+        pad_inches=0.02,
     )
     plt.close()
 
@@ -200,7 +202,9 @@ def visualize_code_matrix(dataset):
     ax.set_yticklabels([])
 
     plt.savefig(
-        "../results/code_matrix.png", bbox_inches="tight", pad_inches=0.02,
+        "../results/code_matrix.png",
+        bbox_inches="tight",
+        pad_inches=0.02,
     )
     plt.close()
 
@@ -266,6 +270,8 @@ def visualize_Gw_matrix(dataset):
     ax.set_yticklabels([])
 
     plt.savefig(
-        "../results/Gw_matrix.png", bbox_inches="tight", pad_inches=0.02,
+        "../results/Gw_matrix.png",
+        bbox_inches="tight",
+        pad_inches=0.02,
     )
     plt.close()

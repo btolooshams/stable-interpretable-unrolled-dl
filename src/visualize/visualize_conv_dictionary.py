@@ -43,7 +43,6 @@ def init_params():
         # default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp001_2022_04_30_22_07_29",
         # default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp005_2022_04_30_07_18_58",
         default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2022_04_30_07_20_07",
-
     )
 
     args = parser.parse_args()
@@ -84,7 +83,8 @@ def main():
     # visualize dictionary --------------------------------------------------#
 
     utils.visualizations.visualize_conv_dictionary(
-        D, save_path=os.path.join(fig_path, "dict.png"),
+        D,
+        save_path=os.path.join(fig_path, "dict.png"),
     )
 
     if params["network"] == "CAElearnbias":
@@ -92,7 +92,8 @@ def main():
 
         D_sorted = D[np.argsort(bias)]
         utils.visualizations.visualize_conv_dictionary(
-            D_sorted, save_path=os.path.join(fig_path, "dict_sorted.png"),
+            D_sorted,
+            save_path=os.path.join(fig_path, "dict_sorted.png"),
         )
 
 

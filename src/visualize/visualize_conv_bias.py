@@ -77,11 +77,11 @@ def main():
     b = b.clone().detach().cpu().numpy()
     b[b < 0] = 0
 
-
     # visualize dictionary --------------------------------------------------#
 
     utils.visualizations.visualize_conv_bias(
-        b, save_path=os.path.join(fig_path, "bias.png"),
+        b,
+        save_path=os.path.join(fig_path, "bias.png"),
     )
 
 

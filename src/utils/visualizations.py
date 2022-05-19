@@ -49,7 +49,7 @@ def visualize_conv_dictionary(D, save_path, cmap="gray"):
     for col in range(p):
         ax1 = plt.subplot(gs1[col])
         wi = W[col]
-        wi = np.transpose(wi, (1,2,0))
+        wi = np.transpose(wi, (1, 2, 0))
         plt.imshow(wi, cmap=cmap)
         plt.axis("off")
         ax1.set_xticklabels([])
@@ -79,6 +79,7 @@ def visualize_conv_feature_maps(Z, save_path, cmap="afmhot"):
     plt.tight_layout(pad=0.0, w_pad=0.0, h_pad=0)
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
+
 
 def visualize_conv_bias(b, save_path):
 
@@ -114,9 +115,7 @@ def visualize_conv_bias(b, save_path):
     ax.set_yscale("log")
     plt.subplot(111)
     hist, bins = np.histogram(b, bins=50)
-    logbins = np.logspace(
-        np.log10(bins[0] + eps), np.log10(bins[-1] + eps), len(bins)
-    )
+    logbins = np.logspace(np.log10(bins[0] + eps), np.log10(bins[-1] + eps), len(bins))
     plt.hist(b, bins=logbins)
     plt.title("Histogram of bias")
 
@@ -124,6 +123,7 @@ def visualize_conv_bias(b, save_path):
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
+
 
 def visualize_image(x, xhat, save_path, cmap="gray"):
 
@@ -162,11 +162,11 @@ def visualize_image(x, xhat, save_path, cmap="gray"):
         ax.spines["bottom"].set_visible(False)
 
     plt.subplot(1, 2, 1)
-    plt.imshow(np.transpose(x, (1,2,0)), cmap=cmap)
+    plt.imshow(np.transpose(x, (1, 2, 0)), cmap=cmap)
     plt.title("img")
 
     plt.subplot(1, 2, 2)
-    plt.imshow(np.transpose(xhat, (1,2,0)), cmap=cmap)
+    plt.imshow(np.transpose(xhat, (1, 2, 0)), cmap=cmap)
     plt.title("est")
 
     fig.tight_layout(pad=0.0, w_pad=0.1, h_pad=0.1)
@@ -519,6 +519,7 @@ def visualize_sorted_atoms(Z, D, save_path, reshape=(28, 28)):
 
     visualize_dense_dictionary(D_sorted, save_path=save_path, reshape=reshape)
 
+
 def visualize_most_used_atoms_energy(Z, D, save_path, reshape=(28, 28)):
 
     eps = 1e-11
@@ -762,7 +763,8 @@ def visualize_most_similar_trainig_examples_based_on_GandZ(
         plt.subplot(4, 5, i + 9)
         plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(beta[sorted_index[-1 - i]]), color="green",
+            "{:.5f}".format(beta[sorted_index[-1 - i]]),
+            color="green",
         )
 
     # least similar
@@ -775,6 +777,7 @@ def visualize_most_similar_trainig_examples_based_on_GandZ(
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
+
 
 def visualize_most_similar_trainig_examples_based_on_GandZ_nohist(
     Ginv,
@@ -825,7 +828,7 @@ def visualize_most_similar_trainig_examples_based_on_GandZ_nohist(
         }
     )
 
-    fig, axn = plt.subplots(3, 5, sharex=True, sharey=True, figsize=(8,6.5))
+    fig, axn = plt.subplots(3, 5, sharex=True, sharey=True, figsize=(8, 6.5))
 
     for ax in axn.flat:
         ax.set_xticklabels([])
@@ -853,7 +856,7 @@ def visualize_most_similar_trainig_examples_based_on_GandZ_nohist(
     plt.title("$\mathrm{Estimate}$")
 
     # most contribution
-    fig_place = [2,3,7,8,12,13]
+    fig_place = [2, 3, 7, 8, 12, 13]
     for i in range(6):
         plt.subplot(3, 5, fig_place[i])
 
@@ -862,11 +865,12 @@ def visualize_most_similar_trainig_examples_based_on_GandZ_nohist(
 
         plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(np.abs(beta[sorted_index[-1 - i]])), color="green",
+            "{:.5f}".format(np.abs(beta[sorted_index[-1 - i]])),
+            color="green",
         )
 
     # least contribution
-    fig_place = [4,5,9,10,14,15]
+    fig_place = [4, 5, 9, 10, 14, 15]
     for i in range(6):
         plt.subplot(3, 5, fig_place[i])
 
@@ -916,7 +920,7 @@ def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
         }
     )
 
-    fig, axn = plt.subplots(1, 5, sharex=True, sharey=True, figsize=(8,3))
+    fig, axn = plt.subplots(1, 5, sharex=True, sharey=True, figsize=(8, 3))
 
     for ax in axn.flat:
         ax.tick_params(axis="x", direction="in")
@@ -935,10 +939,11 @@ def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
         if c == 0:
             plt.ylabel("$\mathrm{Frequency}$")
 
-
     fig.tight_layout(pad=0.00, w_pad=1, h_pad=0.1)
 
-    plt.savefig("{}{}".format(save_path,"hist.pdf"), bbox_inches="tight", pad_inches=0.05)
+    plt.savefig(
+        "{}{}".format(save_path, "hist.pdf"), bbox_inches="tight", pad_inches=0.05
+    )
     plt.close()
 
     ################################
@@ -963,7 +968,7 @@ def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
         }
     )
 
-    fig, axn = plt.subplots(2, 5, sharex=True, sharey=True, figsize=(8,4.5))
+    fig, axn = plt.subplots(2, 5, sharex=True, sharey=True, figsize=(8, 4.5))
 
     ctr = 0
     for ax in axn.flat:
@@ -985,18 +990,19 @@ def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
     plt.title("$\mathrm{Rec}$")
 
     # most similar
-    fig_place = [2,3,7,8]
+    fig_place = [2, 3, 7, 8]
     for i in range(4):
         if i >= len(sorted_index):
             continue
         plt.subplot(2, 5, fig_place[i])
         plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
+            color="green",
         )
 
     # least similar
-    fig_place = [4,5,9,10]
+    fig_place = [4, 5, 9, 10]
     for i in range(4):
         if i >= len(sorted_index):
             continue
@@ -1006,11 +1012,21 @@ def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
 
     fig.tight_layout(pad=0.00, w_pad=0.2, h_pad=0.01)
 
-    plt.savefig("{}{}".format(save_path,".pdf"), bbox_inches="tight", pad_inches=0.05)
+    plt.savefig("{}{}".format(save_path, ".pdf"), bbox_inches="tight", pad_inches=0.05)
     plt.close()
 
+
 def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
-    Z, z_new, y_new, X, Y, x_new, xhat_new, params, save_path, lim_x=True,
+    Z,
+    z_new,
+    y_new,
+    X,
+    Y,
+    x_new,
+    xhat_new,
+    params,
+    save_path,
+    lim_x=True,
 ):
 
     Z_normalized = torch.nn.functional.normalize(Z, dim=0).clone()
@@ -1073,11 +1089,11 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
             plt.ylabel("$\mathrm{Frequency}$")
 
     plt.subplot(4, 5, 6)
-    plt.imshow(np.transpose(x_new, (1,2,0)), cmap="gray")
+    plt.imshow(np.transpose(x_new, (1, 2, 0)), cmap="gray")
     plt.title("Image {:.0f}".format(y_new))
 
     plt.subplot(4, 5, 7)
-    plt.imshow(np.transpose(xhat_new, (1,2,0)), cmap="gray")
+    plt.imshow(np.transpose(xhat_new, (1, 2, 0)), cmap="gray")
     plt.title("Rec")
 
     # most similar
@@ -1085,9 +1101,10 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
         if i >= len(sorted_index):
             continue
         plt.subplot(4, 5, i + 8)
-        plt.imshow(np.transpose(X[sorted_index[-1 - i]],(1,2,0)), cmap="gray")
+        plt.imshow(np.transpose(X[sorted_index[-1 - i]], (1, 2, 0)), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
+            color="green",
         )
 
     # least similar
@@ -1095,7 +1112,7 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
         if i >= len(sorted_index):
             continue
         plt.subplot(4, 5, i + 16)
-        plt.imshow(np.transpose(X[sorted_index[i]],(1,2,0)), cmap="gray")
+        plt.imshow(np.transpose(X[sorted_index[i]], (1, 2, 0)), cmap="gray")
         plt.title("{:.5f}".format(code_similarity[sorted_index[i]]), color="red")
 
     fig.tight_layout(pad=0.1, w_pad=0.0, h_pad=0.0)
@@ -1105,7 +1122,18 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
 
 
 def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_feature_maps(
-    Z_raw, z_new_raw, Z, z_new, y_new, X, Y, x_new, xhat_new, params, save_path, lim_x=True,
+    Z_raw,
+    z_new_raw,
+    Z,
+    z_new,
+    y_new,
+    X,
+    Y,
+    x_new,
+    xhat_new,
+    params,
+    save_path,
+    lim_x=True,
 ):
 
     Z_normalized = torch.nn.functional.normalize(Z, dim=0).clone()
@@ -1168,11 +1196,11 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_fe
             plt.ylabel("$\mathrm{Frequency}$")
 
     plt.subplot(4, 5, 6)
-    plt.imshow(np.transpose(x_new, (1,2,0)), cmap="gray")
+    plt.imshow(np.transpose(x_new, (1, 2, 0)), cmap="gray")
     plt.title("Image {:.0f}".format(y_new))
 
     plt.subplot(4, 5, 7)
-    plt.imshow(np.transpose(xhat_new, (1,2,0)), cmap="gray")
+    plt.imshow(np.transpose(xhat_new, (1, 2, 0)), cmap="gray")
     plt.title("Rec")
 
     # most similar
@@ -1180,9 +1208,10 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_fe
         if i >= len(sorted_index):
             continue
         plt.subplot(4, 5, i + 8)
-        plt.imshow(np.transpose(X[sorted_index[-1 - i]],(1,2,0)), cmap="gray")
+        plt.imshow(np.transpose(X[sorted_index[-1 - i]], (1, 2, 0)), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
+            color="green",
         )
 
     # least similar
@@ -1190,7 +1219,7 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_fe
         if i >= len(sorted_index):
             continue
         plt.subplot(4, 5, i + 16)
-        plt.imshow(np.transpose(X[sorted_index[i]],(1,2,0)), cmap="gray")
+        plt.imshow(np.transpose(X[sorted_index[i]], (1, 2, 0)), cmap="gray")
         plt.title("{:.5f}".format(code_similarity[sorted_index[i]]), color="red")
 
     fig.tight_layout(pad=0.1, w_pad=0.0, h_pad=0.0)
@@ -1204,14 +1233,19 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_fe
     for i in range(8):
         if i >= len(sorted_index):
             continue
-        save_path_i = os.path.join(save_path.split(".png")[0] + "_similar_{}.png".format(i))
-        visualize_conv_feature_maps(Z_raw[sorted_index[-1 - i]], save_path_i, cmap="afmhot")
+        save_path_i = os.path.join(
+            save_path.split(".png")[0] + "_similar_{}.png".format(i)
+        )
+        visualize_conv_feature_maps(
+            Z_raw[sorted_index[-1 - i]], save_path_i, cmap="afmhot"
+        )
 
     for i in range(5):
         if i >= len(sorted_index):
             continue
         save_path_i = os.path.join(save_path.split(".png")[0] + "_dis_{}.png".format(i))
         visualize_conv_feature_maps(Z_raw[sorted_index[i]], save_path_i, cmap="afmhot")
+
 
 def visualize_most_similar_trainig_XG_col_based_on_code_similarity(
     Z, z_new, X, x_new, xhat_new, G, save_path, reshape=(28, 28)
@@ -1286,7 +1320,8 @@ def visualize_most_similar_trainig_XG_col_based_on_code_similarity(
         plt.subplot(4, 4, i + 4)
         plt.imshow(np.reshape(XG[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
+            color="green",
         )
         if i == 1:
             plt.ylabel("$\mathrm{Most}$")
@@ -1322,6 +1357,7 @@ def visualize_most_similar_trainig_XG_col_based_on_code_similarity(
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
+
 
 def visualize_conv_code_histogram(Z, params, save_path):
 
@@ -1378,6 +1414,7 @@ def visualize_conv_code_histogram(Z, params, save_path):
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
+
 
 def visualize_code_matrix(Z, save_path, sorted_atom_index=[]):
     # p x n
@@ -1885,6 +1922,7 @@ def visualize_contribution_of_images_for_dict_j_using_Ginversew(
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
 
+
 def visualize_contribution_of_images_for_dict_j_using_Ginversew_nohist(
     D, j, Ginv, Z, X, Y, params, save_path, reshape=(28, 28), D_reshape=(28, 28)
 ):
@@ -1924,7 +1962,7 @@ def visualize_contribution_of_images_for_dict_j_using_Ginversew_nohist(
         }
     )
 
-    fig, axn = plt.subplots(2, 5, sharex="row", sharey="row", figsize=(8,4.5))
+    fig, axn = plt.subplots(2, 5, sharex="row", sharey="row", figsize=(8, 4.5))
 
     for ax in axn.flat:
         ax.set_xticklabels([])
@@ -1946,7 +1984,7 @@ def visualize_contribution_of_images_for_dict_j_using_Ginversew_nohist(
     plt.title("$\mathrm{Estimate}$")
 
     # most contribution
-    fig_place = [2,3,7,8]
+    fig_place = [2, 3, 7, 8]
     for i in range(4):
         plt.subplot(2, 5, fig_place[i])
 
@@ -1959,9 +1997,8 @@ def visualize_contribution_of_images_for_dict_j_using_Ginversew_nohist(
             color="green",
         )
 
-
     # least contribution
-    fig_place = [4,5,9,10]
+    fig_place = [4, 5, 9, 10]
     for i in range(4):
         plt.subplot(2, 5, fig_place[i])
 
@@ -1970,13 +2007,15 @@ def visualize_contribution_of_images_for_dict_j_using_Ginversew_nohist(
 
         plt.imshow(np.reshape(X[:, sorted_index[i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(np.abs(img_contribution_for_dict_j[sorted_index[i]])), color="red"
+            "{:.5f}".format(np.abs(img_contribution_for_dict_j[sorted_index[i]])),
+            color="red",
         )
 
     fig.tight_layout(pad=0.00, w_pad=0.2, h_pad=0.1)
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.05)
     plt.close()
+
 
 def visualize_atoms_for_fixedpoint(x_list, loops, save_path, reshape=(28, 28)):
 
@@ -2102,7 +2141,8 @@ def visualize_contraction(
         plt.subplot(4, 4, i + 4)
         plt.imshow(np.reshape(D[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "code {:.2f}".format(code[sorted_index[-1 - i]]), color="green",
+            "code {:.2f}".format(code[sorted_index[-1 - i]]),
+            color="green",
         )
         if i == 0:
             plt.ylabel("dictionary")

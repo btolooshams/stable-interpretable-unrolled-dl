@@ -93,9 +93,7 @@ def main():
         D,
         save_path=os.path.join(
             fig_path,
-            "{}_dictionary_sorted.png".format(
-                class_str
-            ),
+            "{}_dictionary_sorted.png".format(class_str),
         ),
         reshape=params["reshape"],
     )

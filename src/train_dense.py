@@ -37,7 +37,11 @@ def init_params():
         default="mnist/exp1",
     )
     parser.add_argument(
-        "-n", "--network", type=str, help="network", default="AE",
+        "-n",
+        "--network",
+        type=str,
+        help="network",
+        default="AE",
     )
     parser.add_argument(
         "-c",
@@ -359,10 +363,17 @@ def main():
                     writer, zT, epoch, reshape=params["code_reshape"]
                 )
                 writer = utils.board.log_dictionary(
-                    writer, net, epoch, reshape=params["data_reshape"],
+                    writer,
+                    net,
+                    epoch,
+                    reshape=params["data_reshape"],
                 )
                 writer = utils.board.log_img(
-                    writer, x, xhat, epoch, reshape=params["data_reshape"],
+                    writer,
+                    x,
+                    xhat,
+                    epoch,
+                    reshape=params["data_reshape"],
                 )
             writer.flush()
 

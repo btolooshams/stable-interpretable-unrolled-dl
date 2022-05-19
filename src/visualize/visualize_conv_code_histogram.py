@@ -38,7 +38,6 @@ def init_params():
         # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2021_12_17_16_42_37",
         # ### default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
         # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
-
     )
 
     args = parser.parse_args()
@@ -81,9 +80,7 @@ def main():
             params["exp_path"], params["threshold"]
         )
     else:
-        fig_path = "{}/figures/code_histogram_based_on_class".format(
-            params["exp_path"]
-        )
+        fig_path = "{}/figures/code_histogram_based_on_class".format(params["exp_path"])
     if not os.path.isdir(fig_path):
         os.makedirs(fig_path)
 
@@ -122,13 +119,12 @@ def main():
         c_train_indices = Y_train == params["class_list"][c]
         Z_train_c = Z_train_proc[:, c_train_indices]
 
-        utils.visualizations.visualize_conv_code_histogram(Z_train_c,
+        utils.visualizations.visualize_conv_code_histogram(
+            Z_train_c,
             params,
             save_path=os.path.join(
                 fig_path,
-                "train_code_histogram_class_{}.png".format(
-                    c
-                ),
+                "train_code_histogram_class_{}.png".format(c),
             ),
         )
 
@@ -137,13 +133,12 @@ def main():
         c_test_indices = Y_test == params["class_list"][c]
         Z_test_c = Z_test_proc[:, c_test_indices]
 
-        utils.visualizations.visualize_conv_code_histogram(Z_test_c,
+        utils.visualizations.visualize_conv_code_histogram(
+            Z_test_c,
             params,
             save_path=os.path.join(
                 fig_path,
-                "test_code_histogram_class_{}.png".format(
-                    c
-                ),
+                "test_code_histogram_class_{}.png".format(c),
             ),
         )
 

@@ -39,7 +39,6 @@ def init_params():
         # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
         # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
         default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp002_2021_12_20_16_46_54",
-
     )
 
     args = parser.parse_args()
@@ -93,7 +92,6 @@ def main():
     X_test = trained_results["X_test"]
     Xhat_test = trained_results["Xhat_test"].detach()
     Z_test = trained_results["Z_test"].detach()
-
 
     # visualize data ------------------------------------------------------#
 

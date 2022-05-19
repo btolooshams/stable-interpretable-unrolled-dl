@@ -21,7 +21,9 @@ class Classifier(torch.nn.Module):
         self.num_class = params["num_class"]
         self.device = params["device"]
 
-        self.classifier = torch.nn.Linear(self.p, self.num_class, device=self.device)  # (in_dim, out_dim)
+        self.classifier = torch.nn.Linear(
+            self.p, self.num_class, device=self.device
+        )  # (in_dim, out_dim)
 
     def forward(self, x):
         return self.classifier(x)
@@ -290,6 +292,7 @@ class CAE(torch.nn.Module):
 
         return xhat, zhat
 
+
 # convolutional - soft-thresholding with learnable lam
 class CAElearnbias(torch.nn.Module):
     def __init__(self, params, W=None):
@@ -421,6 +424,7 @@ class CAElearnbias(torch.nn.Module):
             xhat = F.conv_transpose2d(zhat, self.W, stride=self.stride)
 
         return xhat, zhat
+
 
 # convolutional - soft-thresholding with learnable lam
 class CAElearnbiasuntied(torch.nn.Module):
@@ -561,6 +565,7 @@ class CAElearnbiasuntied(torch.nn.Module):
 
         return xhat, zhat
 
+
 # convolutional - soft-thresholding with learnable lam
 class CAElearnbiasstep(torch.nn.Module):
     def __init__(self, params, W=None):
@@ -585,9 +590,7 @@ class CAElearnbiasstep(torch.nn.Module):
             W = F.normalize(W, p="fro", dim=(-1, -2))
             W /= self.num_ch
         self.register_parameter("W", torch.nn.Parameter(W))
-        step = torch.nn.Parameter(
-            torch.zeros(1, device=self.device) + params["step"]
-        )
+        step = torch.nn.Parameter(torch.zeros(1, device=self.device) + params["step"])
         self.register_parameter("step", step)
 
         b = torch.nn.Parameter(

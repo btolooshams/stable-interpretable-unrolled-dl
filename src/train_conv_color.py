@@ -35,13 +35,20 @@ def init_params():
         type=str,
         help="experiment name",
         default="cifar_color/exp1",
-
     )
     parser.add_argument(
-        "-n", "--network", type=str, help="network", default="CAElearnbias",
+        "-n",
+        "--network",
+        type=str,
+        help="network",
+        default="CAElearnbias",
     )
     parser.add_argument(
-        "-d", "--dataset-name", type=str, help="name of dataset", default="cifar",
+        "-d",
+        "--dataset-name",
+        type=str,
+        help="name of dataset",
+        default="cifar",
     )
     parser.add_argument(
         "-c",

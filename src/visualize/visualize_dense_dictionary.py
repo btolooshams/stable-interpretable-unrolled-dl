@@ -29,7 +29,11 @@ import model, utils
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "-e", "--exp-path", type=str, help="experiment path", default="../../results",
+        "-e",
+        "--exp-path",
+        type=str,
+        help="experiment path",
+        default="../../results",
     )
 
     args = parser.parse_args()
@@ -75,7 +79,9 @@ def main():
 
     # visualize dictionary --------------------------------------------------#
     utils.visualizations.visualize_dense_dictionary(
-        D, save_path=os.path.join(fig_path, "dictionary.png"), reshape=params["reshape"],
+        D,
+        save_path=os.path.join(fig_path, "dictionary.png"),
+        reshape=params["reshape"],
     )
 
 

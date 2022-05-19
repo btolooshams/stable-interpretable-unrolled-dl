@@ -36,7 +36,6 @@ def init_params():
         type=str,
         help="experiment path",
         default="../results/mnist/exp1",
-
     )
 
     args = parser.parse_args()
@@ -171,8 +170,7 @@ def main():
     Z_train = torch.zeros(
         (params["train_num"], z_shape[1], z_shape[2], z_shape[3]), device=device
     )
-    Y_train = torch.zeros(params["train_num"], device=device
-    )
+    Y_train = torch.zeros(params["train_num"], device=device)
 
     X_test = torch.zeros(
         (params["test_num"], params["patch_size"], params["patch_size"]), device=device
@@ -183,8 +181,7 @@ def main():
     Z_test = torch.zeros(
         (params["test_num"], z_shape[1], z_shape[2], z_shape[3]), device=device
     )
-    Y_test = torch.zeros(params["test_num"], device=device
-    )
+    Y_test = torch.zeros(params["test_num"], device=device)
 
     # train
     print("predict train.")
@@ -209,18 +206,15 @@ def main():
             Z_train[ctr] = torch.mean(zT, dim=0).clone()
             Y_train[idx] = torch.squeeze(y.clone())
 
-
             ctr += 1
             if ctr == params["train_num"]:
                 flag_ctr = False
                 break
 
-
     trained_results["X_train"] = X_train.clone()
     trained_results["Xhat_train"] = Xhat_train.clone()
     trained_results["Z_train"] = Z_train.clone()
     trained_results["Y_train"] = Y_train.clone()
-
 
     # test
     print("predict test.")
@@ -251,7 +245,6 @@ def main():
     trained_results["Xhat_test"] = Xhat_test.clone()
     trained_results["Z_test"] = Z_test.clone()
     trained_results["Y_test"] = Y_test.clone()
-
 
     torch.save(trained_results, result_path)
 

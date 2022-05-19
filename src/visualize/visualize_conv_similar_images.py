@@ -39,7 +39,6 @@ def init_params():
         # ### default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
         # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
         # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp002_2021_12_20_16_46_54",
-
     )
 
     args = parser.parse_args()
@@ -78,7 +77,9 @@ def main():
         "model_epoch{}.pt".format(params["num_epochs"] - 1),
     )
     if params["patch_size"] < 32:
-        result_path = os.path.join(params["exp_path"], "trained_results_{}.pt".format(params["patch_size"]))
+        result_path = os.path.join(
+            params["exp_path"], "trained_results_{}.pt".format(params["patch_size"])
+        )
     else:
         result_path = os.path.join(params["exp_path"], "trained_results.pt")
 
@@ -125,7 +126,6 @@ def main():
         Z_test_proc[:, bias < params["threshold"]] = 0
 
         sorted_indices = np.argsort(bias)
-
 
     Z_train_proc = Z_train_proc.T
     Z_test_proc = Z_test_proc.T
