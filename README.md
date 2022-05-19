@@ -17,7 +17,7 @@ For any scripts to run, make sure you are in `src` directory.
 ### Configuration
 
 
-Check `init_params()` inside each of the script to find the detailed parameters. For example, below is the default parameters of `train_dense.py` scirpt.
+Check `init_params()` inside each of the script to find the detailed parameters. For example, below are the default parameters of `train_dense.py` scirpt.
 
 ```
 params = {
