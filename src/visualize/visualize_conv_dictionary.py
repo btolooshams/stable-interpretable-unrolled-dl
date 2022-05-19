@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-visualize for the model x = Dz
+visualize conv dictionary for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,16 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_20_18_06",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp01_2021_12_19_11_32_33",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2021_12_17_16_42_37",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp002_2021_12_20_16_46_54",
-        # default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp01_2022_04_29_20_31_24",
-        # default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp001_2022_04_30_22_07_29",
-        # default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp005_2022_04_30_07_18_58",
-        default="../../results/cifar_color/cifar_conv_0123456789_caelearnbias_noisestd0_conv100_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2022_04_30_07_20_07",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -57,7 +48,7 @@ def init_params():
 
 def main():
 
-    print("Visualzie convolutional dictionary on model x = Dz.")
+    print("Visualize convolutional dictionary on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()

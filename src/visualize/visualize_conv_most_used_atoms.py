@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize most used atoms for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,10 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        # default="../../results/bsd/cae_noisestd25_conv64_kernel7_stride5_2021_12_11_12_52_02",
-        # default="../../results/bsd/caelearn_noisestd25_conv64_kernel7_stride5_2021_12_11_19_56_35",
-        # default="../../results/bsd/caelearn_noisestd25_conv64_kernel8_stride8_patch8_batch128_lr2_2021_12_13_18_51_48",
-        default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_20_18_06",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -52,7 +49,7 @@ def init_params():
 
 def main():
 
-    print("Visualzie mnist most used atoms on model x = Dz.")
+    print("Visualize most used atoms on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()

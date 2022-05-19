@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize image interpolation based on G and Z for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,7 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        default="../../results/mnist/mnist_01234_p500_layers15_lamp7_step1_lamlossp7_2021_12_01_11_49_41",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -42,6 +42,8 @@ def init_params():
         "exp_path": args.exp_path,
         "device": "cuda:0" if torch.cuda.is_available() else "cpu",
         "reshape": (28, 28),
+        "num": 6000,
+        "rho": 1e-3,
     }
 
     return params
@@ -49,13 +51,13 @@ def init_params():
 
 def main():
 
-    print("Visualzie image interpolation based on G and Z on model x = Dz.")
+    print("Visualize image interpolation based on G and Z on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()
 
-    num = 6000
-    rho = 1e-3
+    num = params["num"]
+    rho = params["rho"]
 
     params_pickle = pickle.load(
         open(os.path.join(params["exp_path"], "params.pickle"), "rb")
@@ -195,9 +197,8 @@ def main():
             )
 
     if 1:
-        # for i in range(20):
-        for random_image_index in [787, 1253, 3463, 4201]:
-            # random_image_index = np.random.randint(X_test.shape[-1])
+        for i in range(20):
+            random_image_index = np.random.randint(X_test.shape[-1])
             x_new = X_test[:, random_image_index]
             xhat_new = Xhat_test[:, random_image_index]
             z_new = Z_test[:, random_image_index]

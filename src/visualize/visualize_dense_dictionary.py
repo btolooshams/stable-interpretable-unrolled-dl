@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-visualize for the model x = Dz
+visualize dictionary for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,7 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        default="../../results",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -42,7 +42,6 @@ def init_params():
         "exp_path": args.exp_path,
         "device": "cuda:0" if torch.cuda.is_available() else "cpu",
         "reshape": (28, 28),
-        # "reshape": (7, 7),
     }
 
     return params
@@ -50,7 +49,7 @@ def init_params():
 
 def main():
 
-    print("Visualzie dense dictionary on model x = Dz.")
+    print("Visualize dense dictionary on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()

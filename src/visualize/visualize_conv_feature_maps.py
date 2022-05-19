@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize conv feature maps for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,12 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_20_18_06",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp01_2021_12_19_11_32_33",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2021_12_17_16_42_37",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
-        default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp002_2021_12_20_16_46_54",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -53,9 +48,7 @@ def init_params():
 
 def main():
 
-    print(
-        "Visualzie image interpolation based on code similarity on conv model x = Dz."
-    )
+    print("Visualize feature maps on conv model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()
@@ -135,20 +128,6 @@ def main():
                     fig_path, "train_{}_image.png".format(random_image_index)
                 ),
             )
-
-
-#     utils.visualizations.visualize_conv_feature_maps(
-#         x,
-#         xhat,
-#         z,
-#         params,
-#         save_path=os.path.join(
-#             fig_path,
-#             "feature_maps_trainimage{}.png".format(
-#                 random_image_index
-#             ),
-#         ),
-#     )
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize dense image contribution to dictionary for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,8 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        default="../../results/mnist/mnist_01234_p500_layers15_lamp7_step1_lamlossp7_2021_12_01_11_49_41",
-        # default="../../results/cifar/cifar_01_p200_layers15_lamp05_step1_lamlossp05_2021_12_07_17_30_35",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -43,6 +42,8 @@ def init_params():
         "exp_path": args.exp_path,
         "device": "cuda:0" if torch.cuda.is_available() else "cpu",
         "reshape": (28, 28),
+        "num": 6000,
+        "rho": 1e-3,
     }
 
     return params
@@ -50,13 +51,13 @@ def init_params():
 
 def main():
 
-    print("Visualzie image contribution to dense dictinoary on model x = Dz.")
+    print("Visualize image contribution to dense dictinoary on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()
 
-    num = 6000
-    rho = 1e-3
+    num = params["num"]
+    rho = params["rho"]
 
     params_pickle = pickle.load(
         open(os.path.join(params["exp_path"], "params.pickle"), "rb")

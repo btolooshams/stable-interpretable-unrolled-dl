@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize dense image interpolation based on code similarity for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,7 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        default="../../results/mnist/mnist_01234_p500_layers15_lamp7_step1_lamlossp7_2021_12_01_11_49_41",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -50,7 +50,7 @@ def init_params():
 def main():
 
     print(
-        "Visualzie image interpolation based on code similarity on dense model x = Dz."
+        "Visualize image interpolation based on code similarity on dense model x = Dz."
     )
 
     # init parameters -------------------------------------------------------#
@@ -110,9 +110,8 @@ def main():
 
     # visualize data ------------------------------------------------------#
     if 1:
-        # for i in range(10):
-        for random_image_index in [1746, 3043]:
-            # random_image_index = np.random.randint(X_test.shape[-1])
+        for i in range(10):
+            random_image_index = np.random.randint(X_test.shape[-1])
             x_new = X_test[:, random_image_index]
             xhat_new = Xhat_test[:, random_image_index]
             z_new = Z_test[:, random_image_index]

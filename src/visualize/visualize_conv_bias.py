@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-visualize for the model x = Dz
+visualize bias for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,11 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_20_18_06",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp01_2021_12_19_11_32_33",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2021_12_17_16_42_37",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
-        default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -52,7 +48,7 @@ def init_params():
 
 def main():
 
-    print("Visualzie bias on model x = Dz.")
+    print("Visualize bias on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()

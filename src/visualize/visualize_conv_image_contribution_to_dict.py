@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize image contribution for the conv model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,7 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        default="../../results/bsd/cae_noisestd25_conv64_kernel7_stride5_2021_12_11_12_52_02",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -41,6 +41,8 @@ def init_params():
     params = {
         "exp_path": args.exp_path,
         "device": "cuda:0" if torch.cuda.is_available() else "cpu",
+        "num": 6000,
+        "rho": 1e-3,
     }
 
     return params
@@ -48,13 +50,13 @@ def init_params():
 
 def main():
 
-    print("Visualzie image contribution to conv dictinoary on model x = Dz.")
+    print("Visualize image contribution to conv dictinoary on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()
 
-    num = 100
-    rho = 1e-3
+    num = params["num"]
+    rho = params["rho"]
 
     params_pickle = pickle.load(
         open(os.path.join(params["exp_path"], "params.pickle"), "rb")

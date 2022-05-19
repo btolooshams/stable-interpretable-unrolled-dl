@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize image interpolation based on code similarity for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,12 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_20_18_06",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp01_2021_12_19_11_32_33",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp05_2021_12_17_16_42_37",
-        # ### default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv256_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_19_11_34_26",
-        # default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd15_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp1_2021_12_17_15_20_53",
-        default="../../results/cifar_color/cifar_conv_01234_caelearnbias_noisestd0_conv64_kernel7_stride1_layers15_lamp0_stepp1_lamlossp002_2021_12_20_16_46_54",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -47,7 +42,7 @@ def init_params():
         "exp_path": args.exp_path,
         "device": "cuda:0" if torch.cuda.is_available() else "cpu",
         "threshold": 0.0011,
-        # "patch_size": 32,
+        "path_size_org": 32,
     }
 
     return params
@@ -56,7 +51,7 @@ def init_params():
 def main():
 
     print(
-        "Visualzie image interpolation based on code similarity on conv model x = Dz."
+        "Visualize image interpolation based on code similarity on conv model x = Dz."
     )
 
     # init parameters -------------------------------------------------------#
@@ -76,14 +71,14 @@ def main():
         "model",
         "model_epoch{}.pt".format(params["num_epochs"] - 1),
     )
-    if params["patch_size"] < 32:
+    if params["patch_size"] < params["path_size_org"]:
         result_path = os.path.join(
             params["exp_path"], "trained_results_{}.pt".format(params["patch_size"])
         )
     else:
         result_path = os.path.join(params["exp_path"], "trained_results.pt")
 
-    if params["patch_size"] < 32:
+    if params["patch_size"] < params["path_size_org"]:
         fig_path = "{}/figures/image_interpolation_based_on_code_similarity_for_newimage/patch{}/threshold{}".format(
             params["exp_path"], params["patch_size"], params["threshold"]
         )

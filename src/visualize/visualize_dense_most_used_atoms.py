@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 Bahareh Tolooshams
 
-train for the model x = Dz
+visualize dense most used atoms for the model x = Dz
 
 :author: Bahareh Tolooshams
 """
@@ -33,7 +33,7 @@ def init_params():
         "--exp-path",
         type=str,
         help="experiment path",
-        default="../../results/mnist/mnist_01234_p500_layers15_lamp7_step1_lamlossp7_2021_12_01_11_49_41",
+        default="../../results/exp1",
     )
 
     args = parser.parse_args()
@@ -49,7 +49,7 @@ def init_params():
 
 def main():
 
-    print("Visualzie mnist most used atoms on model x = Dz.")
+    print("Visualize most used atoms on model x = Dz.")
 
     # init parameters -------------------------------------------------------#
     params = init_params()
