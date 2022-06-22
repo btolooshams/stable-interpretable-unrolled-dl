@@ -48,15 +48,15 @@ class DLLoss2D(torch.nn.Module):
         else:
             lam = self.lam
 
-        rec = 0.5 * (x - xhat).pow(2).sum(dim=(1, 2)).mean()
+        rec = 0.5 * (x - xhat).pow(2).sum(dim=(-1, -2)).mean()
 
         if lam:
-            l1z = zhat.abs().sum(dim=(1, 2)).mean()
+            l1z = zhat.abs().sum(dim=(-1, -2)).mean()
         else:
             l1z = 0.0
 
         if self.rho:
-            l2d = dhat.pow(2).sum(dim=(1, 2)).mean()
+            l2d = dhat.pow(2).sum(dim=(-1, -2)).mean()
         else:
             l2d = 0.0
 
