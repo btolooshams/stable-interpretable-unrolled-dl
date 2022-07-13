@@ -270,11 +270,8 @@ class CAE(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        batch_size, device = x_batched_padded.shape[0], x_batched_padded.device
-        p1, p2 = F.conv2d(x_batched_padded, self.W, stride=self.stride).shape[2:]
-
-        zhat = torch.zeros(batch_size, self.num_conv, p1, p2, device=device)
-        for k in range(self.num_layers):
+        zhat = self.nonlin(F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step)
+        for k in range(self.num_layers-1):
             Wz = F.conv_transpose2d(zhat, self.W, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.W, stride=self.stride)
@@ -403,11 +400,8 @@ class CAElearnbias(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        batch_size, device = x_batched_padded.shape[0], x_batched_padded.device
-        p1, p2 = F.conv2d(x_batched_padded, self.W, stride=self.stride).shape[2:]
-
-        zhat = torch.zeros(batch_size, self.num_conv, p1, p2, device=device)
-        for k in range(self.num_layers):
+        zhat = self.nonlin(F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step)
+        for k in range(self.num_layers-1):
             Wz = F.conv_transpose2d(zhat, self.W, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.W, stride=self.stride)
@@ -543,11 +537,8 @@ class CAElearnbiasuntied(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        batch_size, device = x_batched_padded.shape[0], x_batched_padded.device
-        p1, p2 = F.conv2d(x_batched_padded, self.W, stride=self.stride).shape[2:]
-
-        zhat = torch.zeros(batch_size, self.num_conv, p1, p2, device=device)
-        for k in range(self.num_layers):
+        zhat = self.nonlin(F.conv2d(x_batched_padded, self.E, stride=self.stride) * self.step)
+        for k in range(self.num_layers-1):
             Wz = F.conv_transpose2d(zhat, self.D, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.E, stride=self.stride)
@@ -677,11 +668,8 @@ class CAElearnbiasstep(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        batch_size, device = x_batched_padded.shape[0], x_batched_padded.device
-        p1, p2 = F.conv2d(x_batched_padded, self.W, stride=self.stride).shape[2:]
-
-        zhat = torch.zeros(batch_size, self.num_conv, p1, p2, device=device)
-        for k in range(self.num_layers):
+        zhat = self.nonlin(F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step)
+        for k in range(self.num_layers-1):
             Wz = F.conv_transpose2d(zhat, self.W, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.W, stride=self.stride)
