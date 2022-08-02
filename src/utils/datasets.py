@@ -8,7 +8,71 @@ dataset
 
 import numpy as np
 import torch, torchvision
+import torch.nn.functional as F
+import numpy as np
 
+class xDzDataset_uniform(torch.utils.data.Dataset):
+    def __init__(self, params, D=None):
+
+        self.n = params["n"]
+        self.m = params["m"]
+        self.p = params["p"]
+        self.s = params["s"]
+        self.c_min = params["c_min"]
+        self.c_max = params["c_max"]
+        self.manual_seed = params["manual_seed"]
+        self.device = params["device"]
+        self.num_distinct_supp_sets = params["num_distinct_supp_sets"]
+
+        # generate code
+        self.z = self.generate_sparse_samples(
+            self.n,
+            self.p,
+            self.s,
+            self.c_min,
+            self.c_max,
+            self.num_distinct_supp_sets,
+            device=self.device,
+            seed=self.manual_seed,
+        )
+
+        # create filters
+        if D is None:
+            D = (1 / np.sqrt(self.m)) * torch.randn(
+                (self.m, self.p), device=self.device
+            )
+            D = F.normalize(D, p=2, dim=0)
+            D *= 1
+        self.D = D
+        # generate data
+        self.x = torch.matmul(self.D, self.z)
+
+    def generate_sparse_samples(
+        self, n, p, s, c_min, c_max, num_distinct_supp_sets=1, device="cpu", seed=None
+    ):
+        samples = torch.zeros((n, p, 1), device=device)
+        torch.manual_seed(seed)
+        np.random.seed(seed)
+        for j in range(num_distinct_supp_sets):
+            example_set_size = int(n / num_distinct_supp_sets)
+            for i in range(example_set_size):
+                supp_set_size = int(p / num_distinct_supp_sets)
+                ind = np.random.choice(supp_set_size, s, replace=False)
+                ind = ind + j * supp_set_size
+                i = i + j * example_set_size
+                # [1, 2]
+                samples[i][ind, 0] = (
+                    torch.rand(s, device=device) * (c_max - c_min) + c_min
+                ) * ((torch.rand(1, device=device) > 0.5) * 2 - 1)
+
+        return samples
+
+    def __len__(self):
+        return self.n
+
+    def __getitem__(self, idx):
+        with torch.no_grad():
+            return self.x[idx], self.z[idx]
 
 def get_simulated_dataset(data_path, device="cpu"):
     return torch.load(data_path, map_location=device)

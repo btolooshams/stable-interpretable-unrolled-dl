@@ -670,7 +670,7 @@ def visualize_most_used_atoms_active(Z, D, save_path, eps=1e-2, reshape=(28, 28)
     plt.close()
 
 
-def visualize_most_similar_trainig_examples_based_on_GandZ(
+def visualize_most_similar_training_examples_based_on_GandZ(
     Ginv,
     Z,
     z_new,
@@ -779,7 +779,7 @@ def visualize_most_similar_trainig_examples_based_on_GandZ(
     plt.close()
 
 
-def visualize_most_similar_trainig_examples_based_on_GandZ_nohist(
+def visualize_most_similar_training_examples_based_on_GandZ_nohist(
     Ginv,
     Z,
     z_new,
@@ -885,8 +885,112 @@ def visualize_most_similar_trainig_examples_based_on_GandZ_nohist(
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.05)
     plt.close()
 
+def visualize_most_similar_training_examples_based_on_GandZ_nohist_donotnormalize(
+    Ginv,
+    Z,
+    z_new,
+    X,
+    Y,
+    x_new,
+    xhat_new,
+    params,
+    save_path,
+    used_num_images=200,
+    reshape=(28, 28),
+):
 
-def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
+    Ginv_normalized = torch.nn.functional.normalize(Ginv, dim=0).clone()
+    Z_normalized = torch.nn.functional.normalize(Z, dim=0).clone()
+    z_new_normalized = torch.nn.functional.normalize(z_new, dim=0).clone()
+
+    Ginv_ZT = torch.matmul(Ginv_normalized, Z_normalized.T)
+    beta = torch.matmul(Ginv_ZT, z_new_normalized).detach().cpu().numpy()
+
+    eps = 1e-14
+    print("beta norm", np.linalg.norm(beta))
+    beta = np.nan_to_num(beta)
+
+    sorted_index = np.argsort(np.abs(beta))
+
+    ################################
+    axes_fontsize = 10
+    legend_fontsize = 10
+    tick_fontsize = 28
+    title_fontsize = 28
+
+    # upadte plot parameters
+    # style
+    mpl.rcParams.update(
+        {
+            "pgf.texsystem": "pdflatex",
+            "text.usetex": True,
+            "axes.labelsize": axes_fontsize,
+            "axes.titlesize": title_fontsize,
+            "legend.fontsize": legend_fontsize,
+            "xtick.labelsize": tick_fontsize,
+            "ytick.labelsize": tick_fontsize,
+            "text.latex.preamble": r"\usepackage{bm}",
+            "axes.unicode_minus": False,
+        }
+    )
+
+    fig, axn = plt.subplots(3, 5, sharex=True, sharey=True, figsize=(8, 6.5))
+
+    for ax in axn.flat:
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.spines["right"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+        ax.spines["left"].set_visible(False)
+        ax.spines["bottom"].set_visible(False)
+
+    plt.subplot(3, 5, 1)
+    plt.imshow(np.reshape(x_new, reshape), cmap="gray")
+    plt.title("$\mathrm{Image}$")
+
+    plt.subplot(3, 5, 6)
+    plt.imshow(np.reshape(xhat_new, reshape), cmap="gray")
+    plt.title("$\mathrm{Rec}$")
+
+    plt.subplot(3, 5, 11)
+    x_new_estimate = np.matmul(
+        X[:, sorted_index[-used_num_images:]], beta[sorted_index[-used_num_images:]]
+    )
+    plt.imshow(np.reshape(x_new_estimate, reshape), cmap="gray")
+    plt.title("$\mathrm{Estimate}$")
+
+    # most contribution
+    fig_place = [2, 3, 7, 8, 12, 13]
+    for i in range(6):
+        plt.subplot(3, 5, fig_place[i])
+
+        if i >= len(sorted_index):
+            continue
+
+        plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
+        plt.title(
+            "{:.5f}".format(np.abs(beta[sorted_index[-1 - i]])), color="green",
+        )
+
+    # least contribution
+    fig_place = [4, 5, 9, 10, 14, 15]
+    for i in range(6):
+        plt.subplot(3, 5, fig_place[i])
+
+        if i >= len(sorted_index):
+            continue
+
+        plt.imshow(np.reshape(X[:, sorted_index[i]], reshape), cmap="gray")
+        plt.title("{:.5f}".format(np.abs(beta[sorted_index[i]])), color="red")
+
+    fig.tight_layout(pad=0.00, w_pad=0.2, h_pad=0.1)
+
+    plt.savefig(save_path, bbox_inches="tight", pad_inches=0.05)
+    plt.close()
+
+def visualize_dense_most_similar_training_examples_based_on_code_similarity(
     Z, z_new, X, Y, x_new, xhat_new, params, save_path, reshape=(28, 28)
 ):
 
@@ -1016,7 +1120,7 @@ def visualize_dense_most_similar_trainig_examples_based_on_code_similarity(
     plt.close()
 
 
-def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
+def visualize_conv_most_similar_training_examples_based_on_code_similarity(
     Z,
     z_new,
     y_new,
@@ -1121,7 +1225,7 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity(
     plt.close()
 
 
-def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_feature_maps(
+def visualize_conv_most_similar_training_examples_based_on_code_similarity_and_feature_maps(
     Z_raw,
     z_new_raw,
     Z,
@@ -1247,7 +1351,7 @@ def visualize_conv_most_similar_trainig_examples_based_on_code_similarity_and_fe
         visualize_conv_feature_maps(Z_raw[sorted_index[i]], save_path_i, cmap="afmhot")
 
 
-def visualize_most_similar_trainig_XG_col_based_on_code_similarity(
+def visualize_most_similar_training_XG_col_based_on_code_similarity(
     Z, z_new, X, x_new, xhat_new, G, save_path, reshape=(28, 28)
 ):
 
@@ -2148,6 +2252,79 @@ def visualize_contraction(
             plt.ylabel("dictionary")
 
     fig.tight_layout(pad=0.1, w_pad=0.0, h_pad=0.0)
+
+    plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
+    plt.close()
+
+
+def visualize_saliency_map_of_code(
+    x, xhat, saliency, z, save_path, s_name="s", cmap="afmhot",
+):
+
+    axes_fontsize = 10
+    legend_fontsize = 10
+    tick_fontsize = 10
+    title_fontsize = 10
+
+    # upadte plot parameters
+    # style
+    mpl.rcParams.update(
+        {
+            "pgf.texsystem": "pdflatex",
+            "text.usetex": True,
+            "axes.labelsize": axes_fontsize,
+            "axes.titlesize": title_fontsize,
+            "legend.fontsize": legend_fontsize,
+            "xtick.labelsize": tick_fontsize,
+            "ytick.labelsize": tick_fontsize,
+            "text.latex.preamble": r"\usepackage{bm}",
+            "axes.unicode_minus": False,
+        }
+    )
+
+    ncols = len(x)
+    nrows = len(saliency.keys()) + 2 + 1
+
+    fig, axn = plt.subplots(nrows, ncols, sharex="row", sharey="row")
+
+    for ax in axn.flat:
+        ax.spines["right"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.spines["left"].set_visible(False)
+        ax.spines["bottom"].set_visible(False)
+
+    for c in range(ncols):
+        plt.subplot(nrows, ncols, c + 1)
+        plt.imshow(x[c], cmap="gray", vmin=0, vmax=1)
+        if c == 0:
+            plt.ylabel("image")
+
+    for c in range(ncols):
+        plt.subplot(nrows, ncols, c + ncols + 1)
+        plt.imshow(xhat[c], cmap="gray", vmin=0, vmax=1)
+        if c == 0:
+            plt.ylabel("rec")
+
+        for index in range(nrows - 3):
+            saliency["{}".format(index + 1)][c]
+
+    for c in range(ncols):
+        avg_saliency = np.zeros(xhat[0].shape)
+        s_vmax = 0
+        for index in range(nrows - 3):
+            s_vmax = np.maximum(np.max(saliency["{}".format(index + 1)][c]), s_vmax)
+
+        for index in range(nrows - 3):
+            plt.subplot(nrows, ncols, c + ncols * (2 + index) + 1)
+            plt.imshow(saliency["{}".format(index + 1)][c], cmap=cmap)
+            if c == 0:
+                plt.ylabel("{} {}".format(s_name, index + 1))
+
+    fig.tight_layout(pad=0.0, w_pad=0.1, h_pad=0.1)
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.02)
     plt.close()
