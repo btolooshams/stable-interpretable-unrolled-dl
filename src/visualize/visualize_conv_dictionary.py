@@ -74,8 +74,7 @@ def main():
     # visualize dictionary --------------------------------------------------#
 
     utils.visualizations.visualize_conv_dictionary(
-        D,
-        save_path=os.path.join(fig_path, "dict.png"),
+        D, save_path=os.path.join(fig_path, "dict.png"),
     )
 
     if params["network"] == "CAElearnbias":
@@ -83,8 +82,7 @@ def main():
 
         D_sorted = D[np.argsort(bias)]
         utils.visualizations.visualize_conv_dictionary(
-            D_sorted,
-            save_path=os.path.join(fig_path, "dict_sorted.png"),
+            D_sorted, save_path=os.path.join(fig_path, "dict_sorted.png"),
         )
 
 

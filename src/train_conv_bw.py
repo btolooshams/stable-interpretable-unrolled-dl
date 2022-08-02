@@ -30,25 +30,13 @@ import model, utils
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "-e",
-        "--exp_name",
-        type=str,
-        help="experiment name",
-        default="cifar/exp1",
+        "-e", "--exp_name", type=str, help="experiment name", default="cifar/exp1",
     )
     parser.add_argument(
-        "-n",
-        "--network",
-        type=str,
-        help="network",
-        default="CAE",
+        "-n", "--network", type=str, help="network", default="CAE",
     )
     parser.add_argument(
-        "-d",
-        "--dataset-name",
-        type=str,
-        help="name of dataset",
-        default="cifar",
+        "-d", "--dataset-name", type=str, help="name of dataset", default="cifar",
     )
     parser.add_argument(
         "-c",
@@ -111,49 +99,6 @@ def init_params():
     }
 
     return params
-
-
-def compute_psnr(x, xhat):
-    psnr = []
-    for i in range(x.shape[0]):
-        mse = np.mean((x[i] - xhat[i]) ** 2)
-        max_x = np.max(x[i])
-        psnr.append(20 * np.log10(max_x) - 10 * np.log10(mse))
-    return np.mean(psnr)
-
-
-def test_network(data_loader, net, params, name="test"):
-
-    net.eval()
-
-    device = params["device"]
-
-    psnr = []
-    for idx, (x, _) in enumerate(data_loader):
-
-        x = x.to(device)
-
-        # forward ------------------------------------------------------#
-        if params["noise_std"]:
-            x_noisy = (
-                x + params["noise_std"] / 255 * torch.randn(x.shape, device=device)
-            ).to(device)
-            xhat, _ = net(x_noisy)
-        else:
-            xhat, _ = net(x)
-
-        xhat = torch.clamp(xhat, 0, 1)
-
-        psnr.append(
-            compute_psnr(
-                x[:, 0].clone().detach().cpu().numpy(),
-                xhat[:, 0].clone().detach().cpu().numpy(),
-            )
-        )
-
-    psnr = np.mean(np.array(psnr))
-
-    return psnr
 
 
 def main():
@@ -334,7 +279,7 @@ def main():
 
             writer.add_scalar("loss/train", loss.item(), epoch)
 
-            test_psnr = test_network(test_loader, net, params)
+            test_psnr = utils.utils.test_network(test_loader, net, params)
             writer.add_scalar("psnr/test", test_psnr, epoch)
 
             writer.flush()

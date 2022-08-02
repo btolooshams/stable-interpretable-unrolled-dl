@@ -28,11 +28,7 @@ import model, utils
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "-e",
-        "--exp_name",
-        type=str,
-        help="experiment name",
-        default="mnist/exp1",
+        "-e", "--exp_name", type=str, help="experiment name", default="mnist/exp1",
     )
     parser.add_argument(
         "-c",

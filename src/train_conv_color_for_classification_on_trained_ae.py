@@ -64,32 +64,6 @@ def init_params():
     return params
 
 
-def test_network_for_classification(data_loader, net, params):
-
-    device = params["device"]
-
-    net.eval()
-
-    with torch.no_grad():
-        num_correct = 0
-        num_total = 0
-        for idx, (z, y) in tqdm(enumerate(data_loader), disable=True):
-
-            z = z.to(device)
-            y = y.to(device)
-
-            # forward ------------------------------------------------------#
-            yhat = net(z)
-
-            correct_indicators = yhat.max(1)[1].data == y
-            num_correct += correct_indicators.sum().item()
-            num_total += y.size()[0]
-
-    acc = num_correct / num_total
-
-    return acc
-
-
 def main():
 
     print("Train model x = Dz for conv denoising.")
@@ -294,10 +268,10 @@ def main():
 
         if (epoch + 1) % params["log_info_epoch_period"] == 0:
 
-            train_acc = test_network_for_classification(
+            train_acc = utils.utils.test_network_for_classification(
                 train_loader_for_classification, net_class, params
             )
-            test_acc = test_network_for_classification(
+            test_acc = utils.utils.test_network_for_classification(
                 test_loader_for_classification, net_class, params
             )
 

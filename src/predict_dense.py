@@ -168,24 +168,15 @@ def main():
 
     # make dataloader
     train_loader = torch.utils.data.DataLoader(
-        train_dataset,
-        shuffle=False,
-        batch_size=1,
-        num_workers=params["num_workers"],
+        train_dataset, shuffle=False, batch_size=1, num_workers=params["num_workers"],
     )
 
     val_loader = torch.utils.data.DataLoader(
-        val_dataset,
-        shuffle=False,
-        batch_size=1,
-        num_workers=params["num_workers"],
+        val_dataset, shuffle=False, batch_size=1, num_workers=params["num_workers"],
     )
 
     test_loader = torch.utils.data.DataLoader(
-        test_dataset,
-        shuffle=False,
-        batch_size=1,
-        num_workers=params["num_workers"],
+        test_dataset, shuffle=False, batch_size=1, num_workers=params["num_workers"],
     )
 
     net = torch.load(model_path, map_location=params["device"])

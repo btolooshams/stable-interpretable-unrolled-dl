@@ -11,45 +11,70 @@ import torch, torchvision
 import torch.nn.functional as F
 import numpy as np
 
-class xDzDataset_uniform(torch.utils.data.Dataset):
+
+class xDzDataset(torch.utils.data.Dataset):
     def __init__(self, params, D=None):
 
         self.n = params["n"]
         self.m = params["m"]
         self.p = params["p"]
         self.s = params["s"]
-        self.c_min = params["c_min"]
-        self.c_max = params["c_max"]
+        self.code_dist = hyp["code_dist"]
+        if self.code_dist == "uniform":
+            self.c_min = params["c_min"]
+            self.c_max = params["c_max"]
+        else:
+            self.z_mean = params["z_mean"]
+            self.z_std = params["z_std"]
         self.manual_seed = params["manual_seed"]
-        self.device = params["device"]
         self.num_distinct_supp_sets = params["num_distinct_supp_sets"]
+        self.orth_col = hyp["orth_col"]
+        self.device = params["device"]
 
         # generate code
-        self.z = self.generate_sparse_samples(
-            self.n,
-            self.p,
-            self.s,
-            self.c_min,
-            self.c_max,
-            self.num_distinct_supp_sets,
-            device=self.device,
-            seed=self.manual_seed,
-        )
+        if self.code_dist == "uniform":
+            self.z = self.generate_sparse_samples_uniform(
+                self.n,
+                self.p,
+                self.s,
+                self.c_min,
+                self.c_max,
+                self.num_distinct_supp_sets,
+                device=self.device,
+                seed=self.manual_seed,
+            )
+        else:
+            self.z = self.generate_sparse_samples(
+                self.n,
+                self.p,
+                self.s,
+                self.z_mean,
+                self.z_std,
+                self.num_distinct_supp_sets,
+                device=self.device,
+                seed=self.manual_seed,
+            )
 
         # create filters
         if D is None:
-            D = (1 / np.sqrt(self.m)) * torch.randn(
-                (self.m, self.p), device=self.device
-            )
+            if self.orth_col:
+                print("This line gives you error if m neq p!")
+                D, _ = qr(np.random.randn(self.m, self.p))
+                D = torch.Tensor(D, device=self.device)
+            else:
+                D = (1 / np.sqrt(self.m)) * torch.randn(
+                    (self.m, self.p), device=self.device
+                )
             D = F.normalize(D, p=2, dim=0)
             D *= 1
         self.D = D
         # generate data
         self.x = torch.matmul(self.D, self.z)
 
-    def generate_sparse_samples(
+    def generate_sparse_samples_uniform(
         self, n, p, s, c_min, c_max, num_distinct_supp_sets=1, device="cpu", seed=None
     ):
+
         samples = torch.zeros((n, p, 1), device=device)
         torch.manual_seed(seed)
         np.random.seed(seed)
@@ -67,12 +92,32 @@ class xDzDataset_uniform(torch.utils.data.Dataset):
 
         return samples
 
+    def generate_sparse_samples_subgaussian(
+        self, n, p, s, z_mean, z_std, num_distinct_supp_sets=1, device="cpu", seed=None
+    ):
+        samples = torch.zeros((n, p, 1), device=device)
+        torch.manual_seed(seed)
+        np.random.seed(seed)
+        for j in range(num_distinct_supp_sets):
+            example_set_size = int(n / num_distinct_supp_sets)
+            for i in range(example_set_size):
+                supp_set_size = int(p / num_distinct_supp_sets)
+                ind = np.random.choice(supp_set_size, s, replace=False)
+                ind = ind + j * supp_set_size
+                i = i + j * example_set_size
+                samples[i][ind, 0] = (
+                    torch.randn(s, device=device) * z_std + z_mean
+                ) * ((torch.rand(1, device=device) > 0.5) * 2 - 1)
+
+        return samples
+
     def __len__(self):
         return self.n
 
     def __getitem__(self, idx):
         with torch.no_grad():
             return self.x[idx], self.z[idx]
+
 
 def get_simulated_dataset(data_path, device="cpu"):
     return torch.load(data_path, map_location=device)
@@ -264,3 +309,47 @@ def get_cifar_dataset(
         X_te = np.reshape(X_te, (X_te.shape[0], -1, 1))
 
     return X_tr, Y_tr, X_te, Y_te
+
+
+def get_test_path_loader(batch_size, image_path, shuffle=False, num_workers=4):
+    loader = torch.utils.data.DataLoader(
+        torchvision.datasets.ImageFolder(
+            root=image_path,
+            transform=torchvision.transforms.Compose(
+                [torchvision.transforms.Grayscale(), torchvision.transforms.ToTensor()]
+            ),
+        ),
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=num_workers,
+    )
+    return loader
+
+
+def get_train_path_loader(
+    batch_size, image_path, crop_dim=(128, 128), shuffle=True, num_workers=4
+):
+    loader = torch.utils.data.DataLoader(
+        torchvision.datasets.ImageFolder(
+            root=image_path,
+            transform=torchvision.transforms.Compose(
+                [
+                    torchvision.transforms.Grayscale(),
+                    torchvision.transforms.RandomCrop(
+                        crop_dim,
+                        padding=None,
+                        pad_if_needed=True,
+                        fill=0,
+                        padding_mode="constant",
+                    ),
+                    torchvision.transforms.RandomHorizontalFlip(),
+                    torchvision.transforms.RandomVerticalFlip(),
+                    torchvision.transforms.ToTensor(),
+                ]
+            ),
+        ),
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=num_workers,
+    )
+    return loader

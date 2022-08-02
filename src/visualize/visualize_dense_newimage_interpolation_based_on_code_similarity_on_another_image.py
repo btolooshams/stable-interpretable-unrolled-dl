@@ -35,7 +35,7 @@ def init_params():
         type=str,
         help="experiment path",
         default="../../results/exp1",
-        )
+    )
 
     args = parser.parse_args()
 
@@ -92,9 +92,7 @@ def main():
 
     net = torch.load(model_path, map_location=params["device"])
 
-    _, _, X_cifar, _ = utils.datasets.get_cifar_dataset(
-        [0], True, make_flat=False
-    )
+    _, _, X_cifar, _ = utils.datasets.get_cifar_dataset([0], True, make_flat=False)
 
     X_cifar_samples = X_cifar[:50]
     X_cifar_samples = torch.Tensor(X_cifar_samples)
@@ -109,7 +107,6 @@ def main():
     X_cifar_samples = torch.squeeze(X_cifar_samples, dim=-1).T
     X_cifar_samples_hat = torch.squeeze(X_cifar_samples_hat, dim=-1).T.detach()
     Z_cifar_samples = torch.squeeze(Z_cifar_samples, dim=-1).T.detach()
-
 
     # load -----------------------------------------------#
     trained_results = torch.load(result_path, map_location=params["device"])
@@ -143,7 +140,6 @@ def main():
                 ),
                 reshape=params["reshape"],
             )
-
 
 
 if __name__ == "__main__":

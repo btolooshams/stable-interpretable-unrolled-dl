@@ -763,8 +763,7 @@ def visualize_most_similar_training_examples_based_on_GandZ(
         plt.subplot(4, 5, i + 9)
         plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(beta[sorted_index[-1 - i]]),
-            color="green",
+            "{:.5f}".format(beta[sorted_index[-1 - i]]), color="green",
         )
 
     # least similar
@@ -865,8 +864,7 @@ def visualize_most_similar_training_examples_based_on_GandZ_nohist(
 
         plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(np.abs(beta[sorted_index[-1 - i]])),
-            color="green",
+            "{:.5f}".format(np.abs(beta[sorted_index[-1 - i]])), color="green",
         )
 
     # least contribution
@@ -884,6 +882,7 @@ def visualize_most_similar_training_examples_based_on_GandZ_nohist(
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.05)
     plt.close()
+
 
 def visualize_most_similar_training_examples_based_on_GandZ_nohist_donotnormalize(
     Ginv,
@@ -989,6 +988,7 @@ def visualize_most_similar_training_examples_based_on_GandZ_nohist_donotnormaliz
 
     plt.savefig(save_path, bbox_inches="tight", pad_inches=0.05)
     plt.close()
+
 
 def visualize_dense_most_similar_training_examples_based_on_code_similarity(
     Z, z_new, X, Y, x_new, xhat_new, params, save_path, reshape=(28, 28)
@@ -1101,8 +1101,7 @@ def visualize_dense_most_similar_training_examples_based_on_code_similarity(
         plt.subplot(2, 5, fig_place[i])
         plt.imshow(np.reshape(X[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
-            color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
         )
 
     # least similar
@@ -1121,16 +1120,7 @@ def visualize_dense_most_similar_training_examples_based_on_code_similarity(
 
 
 def visualize_conv_most_similar_training_examples_based_on_code_similarity(
-    Z,
-    z_new,
-    y_new,
-    X,
-    Y,
-    x_new,
-    xhat_new,
-    params,
-    save_path,
-    lim_x=True,
+    Z, z_new, y_new, X, Y, x_new, xhat_new, params, save_path, lim_x=True,
 ):
 
     Z_normalized = torch.nn.functional.normalize(Z, dim=0).clone()
@@ -1207,8 +1197,7 @@ def visualize_conv_most_similar_training_examples_based_on_code_similarity(
         plt.subplot(4, 5, i + 8)
         plt.imshow(np.transpose(X[sorted_index[-1 - i]], (1, 2, 0)), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
-            color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
         )
 
     # least similar
@@ -1314,8 +1303,7 @@ def visualize_conv_most_similar_training_examples_based_on_code_similarity_and_f
         plt.subplot(4, 5, i + 8)
         plt.imshow(np.transpose(X[sorted_index[-1 - i]], (1, 2, 0)), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
-            color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
         )
 
     # least similar
@@ -1424,8 +1412,7 @@ def visualize_most_similar_training_XG_col_based_on_code_similarity(
         plt.subplot(4, 4, i + 4)
         plt.imshow(np.reshape(XG[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]),
-            color="green",
+            "{:.5f}".format(code_similarity[sorted_index[-1 - i]]), color="green",
         )
         if i == 1:
             plt.ylabel("$\mathrm{Most}$")
@@ -2245,8 +2232,7 @@ def visualize_contraction(
         plt.subplot(4, 4, i + 4)
         plt.imshow(np.reshape(D[:, sorted_index[-1 - i]], reshape), cmap="gray")
         plt.title(
-            "code {:.2f}".format(code[sorted_index[-1 - i]]),
-            color="green",
+            "code {:.2f}".format(code[sorted_index[-1 - i]]), color="green",
         )
         if i == 0:
             plt.ylabel("dictionary")

@@ -96,9 +96,7 @@ def main():
 
     net = torch.load(model_path, map_location=params["device"])
 
-    _, _, X_cifar, _ = utils.datasets.get_cifar_dataset(
-        [0], True, make_flat=False
-    )
+    _, _, X_cifar, _ = utils.datasets.get_cifar_dataset([0], True, make_flat=False)
 
     X_cifar_samples = X_cifar[:50]
     X_cifar_samples = torch.Tensor(X_cifar_samples)

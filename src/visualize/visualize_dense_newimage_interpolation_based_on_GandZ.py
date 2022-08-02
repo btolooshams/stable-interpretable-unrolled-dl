@@ -80,10 +80,8 @@ def main():
             "classifier_epoch{}.pt".format(params["num_epochs"] - 1),
         )
     result_path = os.path.join(params["exp_path"], "trained_results.pt")
-    fig_path = (
-        "{}/figures/image_interpolation_based_on_GandZ_for_newimage/num{}_rho{}".format(
-            params["exp_path"], num, rho
-        )
+    fig_path = "{}/figures/image_interpolation_based_on_GandZ_for_newimage/num{}_rho{}".format(
+        params["exp_path"], num, rho
     )
     if not os.path.isdir(fig_path):
         os.makedirs(fig_path)

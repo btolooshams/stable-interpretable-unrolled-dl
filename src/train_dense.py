@@ -30,18 +30,10 @@ import model, utils
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "-e",
-        "--exp_name",
-        type=str,
-        help="experiment name",
-        default="mnist/exp1",
+        "-e", "--exp_name", type=str, help="experiment name", default="mnist/exp1",
     )
     parser.add_argument(
-        "-n",
-        "--network",
-        type=str,
-        help="network",
-        default="AE",
+        "-n", "--network", type=str, help="network", default="AE",
     )
     parser.add_argument(
         "-c",
@@ -363,17 +355,10 @@ def main():
                     writer, zT, epoch, reshape=params["code_reshape"]
                 )
                 writer = utils.board.log_dictionary(
-                    writer,
-                    net,
-                    epoch,
-                    reshape=params["data_reshape"],
+                    writer, net, epoch, reshape=params["data_reshape"],
                 )
                 writer = utils.board.log_img(
-                    writer,
-                    x,
-                    xhat,
-                    epoch,
-                    reshape=params["data_reshape"],
+                    writer, x, xhat, epoch, reshape=params["data_reshape"],
                 )
             writer.flush()
 

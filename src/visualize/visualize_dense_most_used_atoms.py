@@ -91,10 +91,7 @@ def main():
     utils.visualizations.visualize_sorted_atoms(
         Z_train,
         D,
-        save_path=os.path.join(
-            fig_path,
-            "{}_dictionary_sorted.png".format(class_str),
-        ),
+        save_path=os.path.join(fig_path, "{}_dictionary_sorted.png".format(class_str),),
         reshape=params["reshape"],
     )
 

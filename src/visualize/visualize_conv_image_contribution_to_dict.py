@@ -115,18 +115,13 @@ def main():
 
     if 0:
         utils.visualizations.visualize_eigenvalues_of_G(
-            G_partial,
-            save_path=os.path.join(
-                fig_path,
-                "eigenvalues_G_train.png",
-            ),
+            G_partial, save_path=os.path.join(fig_path, "eigenvalues_G_train.png",),
         )
 
         utils.visualizations.visualize_Ginverse_matrix(
             G_inverse,
             save_path=os.path.join(
-                fig_path,
-                "partial{}_Ginverse_rho{}.png".format(num, rho),
+                fig_path, "partial{}_Ginverse_rho{}.png".format(num, rho),
             ),
         )
 
@@ -134,8 +129,7 @@ def main():
             G_inverse,
             Z_train_partial,
             save_path=os.path.join(
-                fig_path,
-                "partial{}_Ginversew_rho{}.png".format(num, rho),
+                fig_path, "partial{}_Ginversew_rho{}.png".format(num, rho),
             ),
         )
 
@@ -143,8 +137,7 @@ def main():
             G_inverse,
             X_train_partial,
             save_path=os.path.join(
-                fig_path,
-                "partial{}_XGinverse_rho{}.png".format(num, rho),
+                fig_path, "partial{}_XGinverse_rho{}.png".format(num, rho),
             ),
         )
 
@@ -158,8 +151,7 @@ def main():
             Y_train_partial,
             params,
             save_path=os.path.join(
-                fig_path,
-                " image_contribution_on_dict_{}.png".format(j),
+                fig_path, " image_contribution_on_dict_{}.png".format(j),
             ),
             reshape=params["reshape"],
             D_reshape=params["reshape"],

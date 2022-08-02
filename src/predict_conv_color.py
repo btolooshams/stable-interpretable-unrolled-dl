@@ -136,18 +136,13 @@ def main():
         )
 
     test_loader = torch.utils.data.DataLoader(
-        test_dataset,
-        shuffle=False,
-        batch_size=1,
-        num_workers=params["num_workers"],
+        test_dataset, shuffle=False, batch_size=1, num_workers=params["num_workers"],
     )
 
     # make transforms -------------------------------------------------------#
     if params["patch_size"] < params["patch_size_org"]:
         transform = torchvision.transforms.Compose(
-            [
-                torchvision.transforms.RandomResizedCrop(params["patch_size"]),
-            ]
+            [torchvision.transforms.RandomResizedCrop(params["patch_size"]),]
         )
     else:
         transform = None

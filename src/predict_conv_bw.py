@@ -138,10 +138,7 @@ def main():
         )
 
     test_loader = torch.utils.data.DataLoader(
-        test_dataset,
-        shuffle=False,
-        batch_size=1,
-        num_workers=params["num_workers"],
+        test_dataset, shuffle=False, batch_size=1, num_workers=params["num_workers"],
     )
 
     # load model ------------------------------------------------------#

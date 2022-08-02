@@ -172,18 +172,13 @@ def main():
 
     if 0:
         utils.visualizations.visualize_eigenvalues_of_G(
-            G_partial,
-            save_path=os.path.join(
-                fig_path,
-                "eigenvalues_G_train.png",
-            ),
+            G_partial, save_path=os.path.join(fig_path, "eigenvalues_G_train.png",),
         )
 
         utils.visualizations.visualize_Ginverse_matrix(
             G_inverse,
             save_path=os.path.join(
-                fig_path,
-                "{}_partial{}_Ginverse_rho{}.png".format(class_str, num, rho),
+                fig_path, "{}_partial{}_Ginverse_rho{}.png".format(class_str, num, rho),
             ),
         )
 

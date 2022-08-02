@@ -17,6 +17,7 @@ import argparse
 
 import utils
 
+
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -95,7 +96,7 @@ def main():
     )
 
     # create dataset
-    dataset = utils.datasets.xDzDataset_uniform(params)
+    dataset = utils.datasets.xDzDataset(params)
 
     # save dataset
     if not os.path.exists(params["out_path"]):

@@ -117,8 +117,7 @@ def main():
             Z_train_c,
             params,
             save_path=os.path.join(
-                fig_path,
-                "train_code_histogram_class_{}.png".format(c),
+                fig_path, "train_code_histogram_class_{}.png".format(c),
             ),
         )
 
@@ -131,8 +130,7 @@ def main():
             Z_test_c,
             params,
             save_path=os.path.join(
-                fig_path,
-                "test_code_histogram_class_{}.png".format(c),
+                fig_path, "test_code_histogram_class_{}.png".format(c),
             ),
         )
 

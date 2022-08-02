@@ -77,10 +77,8 @@ def main():
             "classifier_epoch{}.pt".format(params["num_epochs"] - 1),
         )
     result_path = os.path.join(params["exp_path"], "trained_results.pt")
-    fig_path = (
-        "{}/figures/image_interpolation_based_on_code_similarity_for_newimage".format(
-            params["exp_path"]
-        )
+    fig_path = "{}/figures/image_interpolation_based_on_code_similarity_for_newimage".format(
+        params["exp_path"]
     )
     if not os.path.isdir(fig_path):
         os.makedirs(fig_path)

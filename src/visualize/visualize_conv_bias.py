@@ -76,8 +76,7 @@ def main():
     # visualize dictionary --------------------------------------------------#
 
     utils.visualizations.visualize_conv_bias(
-        b,
-        save_path=os.path.join(fig_path, "bias.png"),
+        b, save_path=os.path.join(fig_path, "bias.png"),
     )
 
 

@@ -165,6 +165,62 @@ class AElearnbias(torch.nn.Module):
         return xhat, zT
 
 
+# soft-thresholding with decaying lam
+class AEdecay(torch.nn.Module):
+    def __init__(self, hyp, W=None):
+        super(AEdecay, self).__init__()
+
+        self.m = hyp["m"]
+        self.p = hyp["p"]
+        self.device = hyp["device"]
+        self.lam = hyp["lam"]
+        self.num_layers = hyp["num_layers"]
+        self.twosided = hyp["twosided"]
+        self.beta = hyp["beta"]
+
+        self.relu = torch.nn.ReLU()
+
+        if W is None:
+            W = torch.randn((self.m, self.p), device=self.device)
+            W = F.normalize(W, p=2, dim=0)
+
+        self.register_parameter("W", torch.nn.Parameter(W))
+        self.register_buffer("step", torch.tensor(hyp["step"]))
+
+    def get_param(self, name):
+        return self.state_dict(keep_vars=True)[name]
+
+    def normalize(self):
+        self.W.data = F.normalize(self.W.data, p=2, dim=0)
+
+    def nonlin(self, z, lam):
+        if self.twosided:
+            z = self.relu(torch.abs(z) - lam * self.step) * torch.sign(z)
+        else:
+            z = self.relu(z - lam * self.step)
+        return z
+
+    def encode(self, x):
+        batch_size, device = x.shape[0], x.device
+        zhat = torch.zeros(batch_size, self.p, 1, device=device)
+        lam = self.lam
+        for k in range(self.num_layers):
+            res = torch.matmul(self.W, zhat) - x
+            grad = torch.matmul(torch.t(self.W), res)
+            if k > 0:
+                lam *= self.beta
+            zhat = self.nonlin(zhat - grad * self.step, lam)
+        return zhat
+
+    def decode(self, x):
+        return torch.matmul(self.W, x)
+
+    def forward(self, x):
+        zT = self.encode(x)
+        xhat = self.decode(zT)
+        return xhat, zT
+
+
 # convolutional - soft-thresholding with fixed lam
 class CAE(torch.nn.Module):
     def __init__(self, params, W=None):
@@ -270,8 +326,10 @@ class CAE(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        zhat = self.nonlin(F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step)
-        for k in range(self.num_layers-1):
+        zhat = self.nonlin(
+            F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step
+        )
+        for k in range(self.num_layers - 1):
             Wz = F.conv_transpose2d(zhat, self.W, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.W, stride=self.stride)
@@ -288,6 +346,65 @@ class CAE(torch.nn.Module):
             xhat = F.conv_transpose2d(zhat, self.W, stride=self.stride)
 
         return xhat, zhat
+
+
+# convolutional - hard-thresholding with fixed bias
+class CAEhard(torch.nn.Module):
+    def __init__(self, hyp, W=None):
+        super(CAEhard, self).__init__()
+
+        self.device = hyp["device"]
+        self.num_layers = hyp["num_layers"]
+        self.twosided = hyp["twosided"]
+        self.num_conv = hyp["num_conv"]
+        self.dictionary_dim = hyp["dictionary_dim"]
+        self.stride = hyp["stride"]
+        self.threshold = hyp["threshold"]
+        self.ht = torch.nn.Threshold(self.threshold, 0)
+
+        if W is None:
+            W = torch.randn(
+                (self.num_conv, 1, self.dictionary_dim, self.dictionary_dim),
+                device=self.device,
+            )
+            W = F.normalize(W, p="fro", dim=(-1, -2))
+        self.register_parameter("W", torch.nn.Parameter(W))
+        self.register_buffer("step", torch.tensor(hyp["step"]))
+
+    def get_param(self, name):
+        return self.state_dict(keep_vars=True)[name]
+
+    def normalize(self):
+        self.get_param("W").data = F.normalize(
+            self.get_param("W").data, p="fro", dim=(-1, -2)
+        )
+
+    def nonlin(self, z):
+        if self.twosided:
+            z = self.ht(torch.abs(z)) * torch.sign(z)
+        else:
+            z = self.ht(z)
+        return z
+
+    def encode(self, x):
+        batch_size, device = x.shape[0], x.device
+        p1, p2 = F.conv2d(x, self.get_param("W"), stride=self.stride).shape[2:]
+
+        zhat = torch.zeros(batch_size, self.num_conv, p1, p2, device=device)
+        for k in range(self.num_layers):
+            Wx = F.conv_transpose2d(zhat, self.get_param("W"), stride=self.stride)
+            res = Wx - x
+            grad = F.conv2d(res, self.get_param("W"), stride=self.stride)
+            zhat = self.nonlin(zhat - grad * self.step)
+        return zhat
+
+    def decode(self, x):
+        return F.conv_transpose2d(x, self.get_param("W"), stride=self.stride)
+
+    def forward(self, x):
+        zT = self.encode(x)
+        xhat = self.decode(zT)
+        return xhat, zT
 
 
 # convolutional - soft-thresholding with learnable lam
@@ -400,8 +517,10 @@ class CAElearnbias(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        zhat = self.nonlin(F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step)
-        for k in range(self.num_layers-1):
+        zhat = self.nonlin(
+            F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step
+        )
+        for k in range(self.num_layers - 1):
             Wz = F.conv_transpose2d(zhat, self.W, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.W, stride=self.stride)
@@ -537,8 +656,10 @@ class CAElearnbiasuntied(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        zhat = self.nonlin(F.conv2d(x_batched_padded, self.E, stride=self.stride) * self.step)
-        for k in range(self.num_layers-1):
+        zhat = self.nonlin(
+            F.conv2d(x_batched_padded, self.E, stride=self.stride) * self.step
+        )
+        for k in range(self.num_layers - 1):
             Wz = F.conv_transpose2d(zhat, self.D, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.E, stride=self.stride)
@@ -668,8 +789,10 @@ class CAElearnbiasstep(torch.nn.Module):
     def forward(self, x):
         x_batched_padded, valids_batched = self.split_image(x)
 
-        zhat = self.nonlin(F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step)
-        for k in range(self.num_layers-1):
+        zhat = self.nonlin(
+            F.conv2d(x_batched_padded, self.W, stride=self.stride) * self.step
+        )
+        for k in range(self.num_layers - 1):
             Wz = F.conv_transpose2d(zhat, self.W, stride=self.stride)
             res = Wz - x_batched_padded
             grad = F.conv2d(res, self.W, stride=self.stride)
