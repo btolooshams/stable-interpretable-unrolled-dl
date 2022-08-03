@@ -1,10 +1,9 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 # Stable and interpretable unrolled dictionary learning
-
 ## PUDLE (Provable Unfolded Dictionary LEarning)
 
-### Paper [Stable and Interpretable Unrolled Dictionary Learning](https://openreview.net/pdf?id=e3S0Bl2RO8)
+Published at TMLR 2022 [https://openreview.net/pdf?id=e3S0Bl2RO8](https://openreview.net/pdf?id=e3S0Bl2RO8)
 
 ### Results
 
