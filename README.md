@@ -4,11 +4,13 @@
 
 ## PUDLE (Provable Unfolded Dictionary LEarning)
 
+### Paper [Stable and Interpretable Unrolled Dictionary Learning](https://openreview.net/pdf?id=e3S0Bl2RO8)
+
 ### Results
 
 Trained models and results are stored in `results/save_results`.
 
-Figures are stored in `results/figures`. To generate them run predict script on the trained model and its corresponding visualization script.
+Figures are stored in `results/figures`. To generate them, run predict script on the trained model and its corresponding visualization script.
 
 ### PATH
 
@@ -73,24 +75,34 @@ params = {
 
 ### Training
 
-To train/run for an experiment with a dense/matrix dictionary:
+To train/run for an experiment with a dense/matrix dictionary: `python train_dense.py`
 
-`python train_dense.py`
+To train/run for convolutional model using black and white images: `python train_conv_bw.py`
 
-To train/run for convolutional model using black and white images:
+To train/run for convolutional model using color images such as CIFAR: `python train_conv_color.py`
 
-`python train_conv_bw.py`
+To train/run for a denoising experiment with a convolutional dictionary: `python train_conv_denoise.py`
 
-To train/run for convolutional model using color images such as CIFAR:
 
-`python train_conv_color.py`
+### Simulation
+
+To train/run for dense dictionary learning on simulated data: `python train_simulated.py`
+
+To compare PUDLE with baselines: `python train_dl_compare_baselines.py`
+
+To compare the gradients on simulated data: `python train_dl_choose_gd.py`
+
+To perform dictionary learning using sporco: `python train_sporco.py`
+
+To find an initial estimate of the dictionary using a pairwise method: `python find_initial_estimate.py`
+
+To generate simulated data: `python generate.py`
 
 ### Results
 
 When training is done, the results are saved in `results/{experiment_name}_{random_date}`.
 
 `random_date` is a datetime string generated at the beginning of the training.
-
 
 ### Dependencies
 

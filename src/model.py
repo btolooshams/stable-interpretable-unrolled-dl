@@ -156,7 +156,8 @@ class AEhard(torch.nn.Module):
         zT = self.encode(x)
         xhat = self.decode(zT)
         return xhat, zT
-        
+
+
 # soft-thresholding with learnable lam
 class AElearnbias(torch.nn.Module):
     def __init__(self, params, W=None):

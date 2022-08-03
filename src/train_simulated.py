@@ -66,7 +66,7 @@ def init_params():
         "rho_loss": 0.0,
         #
         "normalize": True,
-        "num_epochs": 100,
+        "num_epochs": 2,
         #
         "log_info_epoch_period": 5,
         "log_model_epoch_period": 5,
