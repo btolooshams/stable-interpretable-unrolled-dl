@@ -275,7 +275,7 @@ def main():
             D_Dstar_err_relative_list.append(D_Dstar_err_relative)
 
         writer.flush()
-        
+
     result_dict = {
         "zT_zstar_err": zT_zstar_err_list,
         "D_Dstar_err_relative": D_Dstar_err_relative_list,

@@ -277,11 +277,12 @@ def main():
                 D_Dstar_err_relative = utils.utils.fro_distance_relative(
                     D.clone(), net.W.data.clone()
                 )
-                writer.add_scalar("baseline/D-Dstar-err-relative", D_Dstar_err_relative, ctr)
+                writer.add_scalar(
+                    "baseline/D-Dstar-err-relative", D_Dstar_err_relative, ctr
+                )
 
                 writer.add_scalar("baseline/train-loss", loss.item(), ctr)
 
-            zT_zstar_err_list.append(zT_zstar_err)
             D_Dstar_err_relative_list.append(D_Dstar_err_relative)
 
         writer.flush()

@@ -107,6 +107,56 @@ class AE(torch.nn.Module):
         return xhat, zT
 
 
+# hard-thresholding with fixed bias
+class AEhard(torch.nn.Module):
+    def __init__(self, hyp, W=None):
+        super(AEhard, self).__init__()
+
+        self.m = hyp["m"]
+        self.p = hyp["p"]
+        self.device = hyp["device"]
+        self.num_layers = hyp["num_layers"]
+        self.twosided = hyp["twosided"]
+        self.threshold = hyp["threshold"]
+        self.ht = torch.nn.Threshold(self.threshold, 0)
+
+        if W is None:
+            W = torch.randn((self.m, self.p), device=self.device)
+            W = F.normalize(W, p=2, dim=0)
+
+        self.register_parameter("W", torch.nn.Parameter(W))
+        self.register_buffer("step", torch.tensor(hyp["step"]))
+
+    def get_param(self, name):
+        return self.state_dict(keep_vars=True)[name]
+
+    def normalize(self):
+        self.W.data = F.normalize(self.W.data, p=2, dim=0)
+
+    def nonlin(self, z):
+        if self.twosided:
+            z = self.ht(torch.abs(z)) * torch.sign(z)
+        else:
+            z = self.ht(z)
+        return z
+
+    def encode(self, x):
+        batch_size, device = x.shape[0], x.device
+        zhat = torch.zeros(batch_size, self.p, 1, device=device)
+        for k in range(self.num_layers):
+            res = torch.matmul(self.W, zhat) - x
+            grad = torch.matmul(torch.t(self.W), res)
+            zhat = self.nonlin(zhat - grad * self.step)
+        return zhat
+
+    def decode(self, x):
+        return torch.matmul(self.W, x)
+
+    def forward(self, x):
+        zT = self.encode(x)
+        xhat = self.decode(zT)
+        return xhat, zT
+        
 # soft-thresholding with learnable lam
 class AElearnbias(torch.nn.Module):
     def __init__(self, params, W=None):

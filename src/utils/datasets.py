@@ -19,7 +19,7 @@ class xDzDataset(torch.utils.data.Dataset):
         self.m = params["m"]
         self.p = params["p"]
         self.s = params["s"]
-        self.code_dist = hyp["code_dist"]
+        self.code_dist = params["code_dist"]
         if self.code_dist == "uniform":
             self.c_min = params["c_min"]
             self.c_max = params["c_max"]
@@ -28,7 +28,7 @@ class xDzDataset(torch.utils.data.Dataset):
             self.z_std = params["z_std"]
         self.manual_seed = params["manual_seed"]
         self.num_distinct_supp_sets = params["num_distinct_supp_sets"]
-        self.orth_col = hyp["orth_col"]
+        self.orth_col = params["orth_col"]
         self.device = params["device"]
 
         # generate code
@@ -43,8 +43,8 @@ class xDzDataset(torch.utils.data.Dataset):
                 device=self.device,
                 seed=self.manual_seed,
             )
-        else:
-            self.z = self.generate_sparse_samples(
+        elif self.code_dist == "subgaussian":
+            self.z = self.generate_sparse_samples_subgaussian(
                 self.n,
                 self.p,
                 self.s,
@@ -54,6 +54,9 @@ class xDzDataset(torch.utils.data.Dataset):
                 device=self.device,
                 seed=self.manual_seed,
             )
+        else:
+            print("Code distribution is not implemented!")
+            raise NotImplementedError
 
         # create filters
         if D is None:

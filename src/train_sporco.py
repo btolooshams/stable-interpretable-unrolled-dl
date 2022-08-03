@@ -16,6 +16,10 @@ import numpy as np
 from datetime import datetime
 import argparse
 
+import sporco
+from sporco.admm import bpdn
+from sporco.dictlrn import bpdndl
+
 import sys
 
 sys.path.append("src/")
@@ -26,11 +30,7 @@ import model, utils
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "-e",
-        "--exp_name",
-        type=str,
-        help="experiment name",
-        default="sporco_dl/exp1",
+        "-e", "--exp_name", type=str, help="experiment name", default="sporco_dl/exp1",
     )
     parser.add_argument(
         "-d",
@@ -125,13 +125,6 @@ def main():
         print("generate data.")
         dataset = utils.datasets.xDzDataset(params)
 
-    train_loader = torch.utils.data.DataLoader(
-        dataset,
-        shuffle=params["shuffle"],
-        batch_size=params["batch_size"],
-        num_workers=params["num_workers"],
-    )
-
     D = dataset.D.clone().detach().cpu().numpy()
     X = torch.squeeze(dataset.x).clone().detach().cpu().numpy().T
     Z = torch.squeeze(dataset.z).clone().detach().cpu().numpy().T
@@ -176,7 +169,8 @@ def main():
     D_Dstar_err_relative = utils.utils.fro_distance_relative(
         torch.Tensor(D).clone(), torch.Tensor(W).clone()
     )
-    print("D_Dtilde_err_relative", D_Dtilde_err_relative)
+    print("D_Dstar_err_relative", D_Dstar_err_relative)
+
 
 if __name__ == "__main__":
     main()

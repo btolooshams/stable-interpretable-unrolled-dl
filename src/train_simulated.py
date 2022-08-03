@@ -37,7 +37,7 @@ def init_params():
         "--data-path",
         type=str,
         help="data path",
-        default="../data/simulated_data/data.pt",
+        default="../data/simulated_data.pt",
     )
 
     args = parser.parse_args()
@@ -133,7 +133,7 @@ def main():
     )
 
     # loss criterion  ------------------------------------------------------#
-    criterion = utils.loss.DLLoss(params)
+    criterion = utils.loss.DLLoss1D(params)
 
     # train  ---------------------------------------------------------------#
     for epoch in tqdm(

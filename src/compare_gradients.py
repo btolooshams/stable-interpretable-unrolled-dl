@@ -1,4 +1,4 @@
-params"""
+"""
 Copyright (c) 2021 Bahareh Tolooshams
 
 train x = Dz with choice of gradient
@@ -29,11 +29,7 @@ import model, utils
 def init_params():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "-e",
-        "--exp_name",
-        type=str,
-        help="experiment name",
-        default="gradients/exp1",
+        "-e", "--exp_name", type=str, help="experiment name", default="gradients/exp1",
     )
     parser.add_argument(
         "-n", "--network", type=str, help="network", default="AE",
@@ -70,13 +66,8 @@ def init_params():
         "dict_init": args.dict_init,
         "device": "cuda:0" if torch.cuda.is_available() else "cpu",
         "random_date": datetime.now().strftime("%Y_%m_%d_%H_%M_%S"),
-        "n": 10000,
-        "m": 50,  # x dimension
-        "p": 100,  # z dimension
-        "s": 5,  # sparsity
-        "code_dist": "uniform",
-        "c_min": 1.0,
-        "c_max": 2.0,
+        "m": 100,  # x dimension
+        "p": 150,  # z dimension
         "lam": 0.2,
         "step": 0.2,
         "beta": 1,
@@ -85,15 +76,15 @@ def init_params():
         "normalize": True,
         "shuffle": False,
         "twosided": True,
-        "batch_size": 10000,
+        "batch_size": 1000,
         "init_close": True,
-        "num_epochs": 600,
+        "num_epochs": 10,
         "num_workers": 0,
         #
         "num_layers": 100,
         "min_num_layers": 1,
         "max_num_layers": 100,
-        "netstar_num_layers": 1000,
+        "netlasso_num_layers": 1000,
         "enable_manual_seed": True,
         "manual_seed": 39,
     }
@@ -189,7 +180,7 @@ def main():
     W = net.W.clone()
 
     params_lasso = params.copy()
-    params_lasso["num_layers"] = netlasso_num_layers
+    params_lasso["num_layers"] = params["netlasso_num_layers"]
     net_lasso = model.AE(params_lasso, W.clone())
 
     print("method: {}".format(params["grad_method"]))
@@ -199,7 +190,9 @@ def main():
     g_gstar_err_list = []
 
     # train  ---------------------------------------------------------------#
-    for num_layers in tqdm(range(params["min_num_layers"], params["max_num_layers"] + 1), disable=True):
+    for num_layers in tqdm(
+        range(params["min_num_layers"], params["max_num_layers"] + 1), disable=False
+    ):
         net.num_layers = num_layers
 
         for idx, (x, zstar) in tqdm(enumerate(data_loader), disable=True):
@@ -286,7 +279,10 @@ def main():
             "ghat_gstar_err": ghat_gstar_err,
         }
 
-        torch.save(result_dict, os.path.join(out_path, "{}_results.pt".format(params["grad_method"])))
+        torch.save(
+            result_dict,
+            os.path.join(out_path, "{}_results.pt".format(params["grad_method"])),
+        )
 
         writer.close()
 
